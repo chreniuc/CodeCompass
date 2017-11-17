@@ -6,12 +6,10 @@ WORKDIR /root
 COPY start_webserver.sh .
 RUN chmod u+x ./start_webserver.sh
 
-EXPOSE ${WEBSERVER_PORT}
-
 CMD ./start_webserver.sh \
-        ${DATABASE_HOST} \
-        ${DATABASE_PORT} \
-        ${DATABASE_USER_NAME} \
-        ${DATABASE_USER_PASSWORD} \
-        ${WEBSERVER_PORT} \
-        ${SHARED_WORKSPACE_DIR}
+        ${DATABASE_HOST:-localhost} \
+        ${DATABASE_PORT:-5432} \
+        ${DATABASE_USER_NAME:-postgres} \
+        ${DATABASE_USER_PASSWORD:-postgres} \
+        ${WEBSERVER_PORT:-6251} \
+        ${SHARED_WORKSPACE_DIR:-/data}

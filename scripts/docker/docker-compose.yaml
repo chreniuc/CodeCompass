@@ -65,6 +65,10 @@ services:
             - type: bind
               source: ./xercessrc
               target: /mnt/ws
+# TODO: For debugging:
+#        stdin_open: true
+#        tty: true
+#        command: /bin/sh
 
     dbadmin:
         container_name: cc_dbadmin

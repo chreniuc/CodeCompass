@@ -9,14 +9,6 @@ ENV USERS_HOME             /root
 # Exact documentation can be found on the beginning of the parse_project.sh.
 # See the bin directory.
 
-# Database connection arguments. They could be overwritten in the descendant
-# image.
-ENV PROJECT_NAME           codecompass
-ENV DATABASE_HOST          localhost
-ENV DATABASE_PORT          5432
-ENV DATABASE_USER_NAME     postgres
-ENV DATABASE_USER_PASSWORD postgres
-
 # Directory where the particular project perfoms the build.
 ENV PROJECT_WORKSPACE_DIR  ${USERS_HOME}/ws
 
