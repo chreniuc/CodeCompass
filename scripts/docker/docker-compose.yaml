@@ -36,6 +36,7 @@ services:
             - type: volume
               source: parse_data
               target: /data
+        # TODO: Are these necessary?
         stdin_open: true
         tty: true
 
@@ -43,16 +44,7 @@ services:
         container_name: cc_xercesparser
         build:
             context: xerces/
-#            dockerfile: Dockerfile.orig
             dockerfile: Dockerfile
-#            args:
-#                - project_name=xerces
-#                - database_host=database
-#                - database_port=5432
-#                - database_user_name=postgres
-#                - database_users_password=postgres
-#                - project_workspace_dir=/mnt/ws
-#                - shared_workspace_dir=/data
         image: xercesparser
         environment:
             - PROJECT_NAME=xerces

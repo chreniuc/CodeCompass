@@ -36,8 +36,8 @@ RUN chmod u+x \
     ./bin/install_llvm.sh \
     ./bin/install_thrift.sh \
     ./bin/install_gtest.sh \
-    ./bin/install_codecompass.sh
-RUN ./bin/install_all.sh
+    ./bin/install_codecompass.sh \
+    && ./bin/install_all.sh
 
 
 FROM xenial-base AS code-compass
