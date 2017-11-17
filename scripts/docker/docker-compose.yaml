@@ -1,57 +1,9 @@
 version: '3.2'
 
 services:
-    webserver:
-        build:
-            context: ./ccgui
-            args:
-                - database_host=database
-                - database_port=5432
-                - database_user_name=postgres
-                - database_users_password=postgres
-                - webserver_port=6251
-                - shared_workspace_dir=/data
-
-        ports:
-            - "6251:6251"
-
-        networks:
-            - codecompass
-
-        volumes:
-            - type: volume
-              source: parse_data
-              target: /data
-
-        stdin_open: true
-        tty: true
-
-    xercesparser:
-        build:
-            context: ./xerces
-            args:
-                - project_name=xerces
-                - database_host=database
-                - database_port=5432
-                - database_user_name=postgres
-                - database_users_password=postgres
-                - project_workspace_dir=/mnt/ws
-                - shared_workspace_dir=/data
-
-        networks:
-            - codecompass
-
-        volumes:
-            - type: volume
-              source: parse_data
-              target: /data
-
-            - type: bind
-              source: ./xercessrc
-              target: /mnt/ws
-
     db:
-        image: 'postgres:9.5'
+        container_name: cc_db
+        image: postgres:9.5
         ports:
             - "5432:5432"
         environment:
@@ -64,7 +16,66 @@ services:
                 aliases:
                     - database
 
+    webserver:
+        container_name: cc_webserrver
+        image: mindegy/ccgui
+        environment:
+            - DATABASE_HOST=database
+            - DATABASE_PORT=5432
+            - DATABASE_USER_NAME=postgres
+            - DATABASE_USERS_PASSWORD=postgres
+            - WEBSERVER_PORT=6251
+            - SHARED_WORKSPACE_DIR=/data
+        ports:
+            - "6251:6251"
+        depends_on:
+          - db
+        networks:
+            - codecompass
+        volumes:
+            - type: volume
+              source: parse_data
+              target: /data
+        stdin_open: true
+        tty: true
+
+    xercesparser:
+        container_name: cc_xercesparser
+        build:
+            context: xerces/
+#            dockerfile: Dockerfile.orig
+            dockerfile: Dockerfile
+#            args:
+#                - project_name=xerces
+#                - database_host=database
+#                - database_port=5432
+#                - database_user_name=postgres
+#                - database_users_password=postgres
+#                - project_workspace_dir=/mnt/ws
+#                - shared_workspace_dir=/data
+        image: xercesparser
+        environment:
+            - PROJECT_NAME=xerces
+            - DATABASE_HOST=database
+            - DATABASE_PORT=5432
+            - DATABASE_USER_NAME=postgres
+            - DATABASE_USERS_PASSWORD=postgres
+            - PROJECT_WORKSPACE_DIR=/mnt/ws
+            - CC_SHARED_WORKSPACE_DIR=/data
+        depends_on:
+          - db
+        networks:
+            - codecompass
+        volumes:
+            - type: volume
+              source: parse_data
+              target: /data
+            - type: bind
+              source: ./xercessrc
+              target: /mnt/ws
+
     dbadmin:
+        container_name: cc_dbadmin
         image: 'quantumobject/docker-mywebsql'
         ports:
             - "8081:80"

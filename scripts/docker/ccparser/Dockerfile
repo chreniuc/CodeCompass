@@ -1,4 +1,4 @@
-FROM codecompass
+FROM mindegy/codecompass
 
 # TODO: Should be used with non root user
 ENV USERS_HOME             /root
@@ -9,7 +9,7 @@ ENV USERS_HOME             /root
 # Exact documentation can be found on the beginning of the parse_project.sh.
 # See the bin directory.
 
-# Database connection arguments. They could be overwrite in the descendant
+# Database connection arguments. They could be overwritten in the descendant
 # image.
 ENV PROJECT_NAME           codecompass
 ENV DATABASE_HOST          localhost
@@ -43,9 +43,9 @@ RUN                                                                           \
 COPY ./bin ${SCRIPT_DIR}
 
 # Install CC parser helper scripts
-RUN \
-    chmod u+x ${SCRIPT_DIR}/parse_project.sh                               && \
-    chmod u+x ${SCRIPT_DIR}/build_project.sh
+RUN chmod u+x \
+    ${SCRIPT_DIR}/parse_project.sh \
+    ${SCRIPT_DIR}/build_project.sh
 
 # Perform logging/parsing tasks. The task specialization should be placed in
 # descendant image. Create ${SCRIPT_DIR}/project_specific.sh in the
